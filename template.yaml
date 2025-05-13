@@ -1,0 +1,50 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Image Resizer Lambda - Resizes images on S3 upload using ImageMagick
+
+Globals:
+  Function:
+    Timeout: 30
+    Runtime: nodejs18.x
+    MemorySize: 512
+
+Resources:
+  ImageResizeFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: image-resizer
+      Handler: src/handler.resizeImage
+      CodeUri: .
+      Policies:
+        - S3ReadPolicy:
+            BucketName: !Ref SourceBucket
+        - S3WritePolicy:
+            BucketName: !Ref DestinationBucket
+      Environment:
+        Variables:
+          DESTINATION_BUCKET: !Ref DestinationBucket
+      Events:
+        ImageUpload:
+          Type: S3
+          Properties:
+            Bucket: !Ref SourceBucket
+            Events: s3:ObjectCreated:Put
+    Metadata:
+      DockerTag: nodejs18.x
+      DockerContext: .
+      Dockerfile: Dockerfile
+
+Parameters:
+  SourceBucket:
+    Type: String
+    Description: The name of the S3 bucket where original images are uploaded
+
+  DestinationBucket:
+    Type: String
+    Description: The name of the S3 bucket to save resized images
+
+Outputs:
+  LambdaFunction:
+    Description: "Image resize function ARN"
+    Value: !GetAtt ImageResizeFunction.Arn

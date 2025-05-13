@@ -1,0 +1,19 @@
+{
+  "name": "image-resizer",
+  "version": "1.0.0",
+  "description": "AWS Lambda function for resizing images from S3 using ImageMagick (local development with LocalStack)",
+  "main": "src/handler.js",
+  "scripts": {
+    "start": "node src/handler.js",
+    "test": "node src/handler.js",
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.465.0",
+    "aws-sdk": "^2.1524.0",
+    "dotenv": "^16.5.0",
+    "imagemagick": "^0.1.3"
+  },
+  "devDependencies": {},
+  "author": "Mahmoud Isreawe",
+  "license": "MIT"
+}
