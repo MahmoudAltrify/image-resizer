@@ -1,0 +1,12 @@
+version = 0.1
+
+[default]
+[default.deploy]
+stack_name = "image-resizer-stack"
+s3_bucket = "your-sam-deploy-bucket"
+s3_prefix = "image-resizer"
+region = "us-east-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = "SourceBucket=my-local-bucket DestinationBucket=my-local-bucket"
+# Optinal when deploy to actual s3
